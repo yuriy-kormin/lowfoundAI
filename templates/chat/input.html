@@ -1,0 +1,15 @@
+<form class="pt-3" action="#">
+  <div class="form-group">
+      <textarea class="form-control" id="user_input" placeholder="Type your message here..." rows="3"
+      oninput="checkClass(this,'chat_send')"
+      ></textarea>
+  </div>
+  <div class="form-group">
+      <button type="button" class="btn btn-secondary w-100" disabled id="chat_send"
+      onclick="javascript:sendRequest()"
+      >Send</button>
+  </div>
+    <script>
+        renderHistory()
+    </script>
+</form>

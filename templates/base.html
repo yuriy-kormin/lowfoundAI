@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery=True %}
+    {% csrf_token %}
+        {% block head %}
+        {% endblock %}
+    <title>Lowfound OpenAI chat </title>
+    <script src="{% static "js/chat.js" %}"> </script>
+</head>
+<body class="bg-light d-flex flex-column min-vh-100 ">
+
+<main class="container-sm d-flex flex-column min-vh-100 rounded shadow-sm" style="max-width: 600px;">
+    {% include "nav.html" %}
+    {% if request.user.is_authenticated %}
+        {% include "chat/chat.html" %}
+    {% else %}
+        {% include "login/login.html" %}
+    {% endif %}
+</main>
+</body>
+</html>
+

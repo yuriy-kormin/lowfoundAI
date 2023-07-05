@@ -1,0 +1,17 @@
+<form method="POST" action="{% url "register" %}">
+        {% csrf_token %}
+  <div class="form-group">
+      <input type="username" name="username" class="form-control" id="register_username" placeholder="Username"
+      oninput="checkClass(this,'sign_up','register_password')"
+      autocomplete="username"
+      >
+  </div>
+  <div class="form-group">
+      <input type="password" name="password" class="form-control" id="register_password" placeholder="Password"
+      oninput="checkClass(this,'sign_up','register_username')"
+      autocomplete="current-password">
+  </div>
+  <div class="form-group">
+      <button class="btn btn-secondary w-100" disabled id="sign_up">Sign up</button>
+  </div>
+</form>

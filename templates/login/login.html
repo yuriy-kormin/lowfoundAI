@@ -1,0 +1,23 @@
+{% load static %}
+    <div class="row mb-3">
+        <div class="col-12">
+             <div class="image-container">
+                <img src ="{% static "img.png" %}" class="img-fluid" />
+             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            {% include "login/login_form.html" %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 d-flex align-items-center justify-content-center p-3">
+            or sign up if you don’t have an account yet
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            {% include "login/register_form.html" %}
+        </div>
+    </div>
