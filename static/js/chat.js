@@ -68,7 +68,7 @@ function make_string(data){
         dataRoot.appendChild(dataCell)
     return dataRoot
 }
-function make_message(message){
+function make_message(message,in_progress=false){
     const rootDiv = make_div('row')
      rootDiv.setAttribute('id', message['id']);
         const messageDiv=make_div('col-12')
@@ -90,10 +90,17 @@ function make_message(message){
         //create response
         const responseHeader = make_string("GPT responded:")
         responseHeader.classList.add('text-primary')
-        const responseRoot = make_string(message['response'])
         messageDiv.appendChild(responseHeader)
+        if (in_progress){
+            const tempRowDiv = make_div('row')
+                const spinnerDiv = make_div('spinner-border')
+                spinnerDiv.classList.add('text-primary')
+            tempRowDiv.appendChild(spinnerDiv)
+            messageDiv.appendChild(tempRowDiv)
+        } else {
+            // response data
+        const responseRoot = make_string(message['response'])
         messageDiv.appendChild(responseRoot)
-
         //create remove link
         const hrefColDiv = make_div('row')
         hrefColDiv.classList.add('text-warning')
@@ -105,16 +112,13 @@ function make_message(message){
             hrefDiv.appendChild(Removelink)
         hrefColDiv.appendChild(hrefDiv)
         messageDiv.appendChild(hrefColDiv)
+        }
+
+
+
 
     rootDiv.appendChild(messageDiv);
     return rootDiv
-}
-
-
-function pause(duration) {
-  return new Promise(resolve => {
-    setTimeout(resolve, duration);
-  });
 }
 
 async function makeRemoveRequest(id){
@@ -134,13 +138,15 @@ function removeDiv(div) {
     removeDiv(div.firstChild);
     div.removeChild(div.firstChild);
   }
-
+    const root = document.getElementById('chat_history')
+    if (root.children.length === 0) {
+        root.appendChild(render_history_is_empty())
+    }
 }
 
 function removeMessage(id){
     const messageDiv=document.getElementById(id)
     if (id){
-
         makeRemoveRequest(id).then(result=>{
             if (result['success']) {
                 removeDiv(messageDiv)
@@ -150,17 +156,12 @@ function removeMessage(id){
     } else {
         console.error('cannot remove message')
     }
-
-    const root = document.getElementById('chat_history')
-    if (root.children.length === 1) {
-        root.appendChild(render_history_is_empty())
-    }
-
 }
 
 
 function render_history_is_empty() {
     const rootDiv = make_div('row')
+        rootDiv.setAttribute('id', 'empty');
     const messageDiv=make_div('col-12')
     messageDiv.classList.add('m-2')
     messageDiv.style.backgroundColor="#F5F5F5";
@@ -174,7 +175,8 @@ function renderHistory(){
         if (result.length) {
             result.forEach(message => {
                 const div = make_message(message)
-                root.appendChild(div)
+                root.appendChild(div);
+                scrollToBottom(root);
             })
         } else {
             root.appendChild(render_history_is_empty())
@@ -226,15 +228,51 @@ async function makeRequest(text){
     return response['createMessage']
 }
 
+function getCurrentDate() {
+  const currentDate = new Date();
 
+  const day = String(currentDate.getDate()).padStart(2, '0');
+  const monthIndex = currentDate.getMonth();
+  const year = currentDate.getFullYear();
+  const hours = String(currentDate.getHours()).padStart(2, '0');
+  const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+
+  const month = monthNames[monthIndex];
+
+  return `${day} ${month} ${year} ${hours}:${minutes}`;
+}
+
+function scrollToBottom(container) {
+  container.scrollTop = container.scrollHeight;
+}
 function sendRequest(){
     const text = document.getElementById('user_input').value;
+    const root = document.getElementById('chat_history');
+    const tempResponse={
+        'id': -1,
+        'date': getCurrentDate(),
+        'request': text
+    }
+    let div = make_message(tempResponse,true);
+    const emptyDiv = document.getElementById('empty');
+    if (emptyDiv) {
+        removeDiv(emptyDiv);
+    }
+    root.appendChild(div);
+    text.value="";
+    scrollToBottom(root);
     makeRequest(text).then(response =>{
         if (response['success']){
-            const root = document.getElementById('chat_history')
-            const div = make_message(response['message'])
-            root.appendChild(div)
+            removeDiv(div)
+            div = make_message(response['message']);
+            root.appendChild(div);
+            scrollToBottom(root);
         }
-
     })
+
 }

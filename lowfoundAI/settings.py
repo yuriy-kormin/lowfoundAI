@@ -162,3 +162,4 @@ TIME_ZONE = 'Asia/Tbilisi'
 GRAPHENE = {
     'SCHEMA': 'lowfoundAI.schema.schema'
 }
+CHAT_GPT_KEY = os.getenv('CHAT_GPT_KEY')

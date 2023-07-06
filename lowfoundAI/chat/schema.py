@@ -1,8 +1,11 @@
+import asyncio
+
 import graphene
 from graphene_django import DjangoObjectType
 from django.db.models import Q
 
 from .models import Message
+from .remote_api import process_api_request, get_AI_response
 
 
 class MessageNode(DjangoObjectType):
@@ -10,7 +13,6 @@ class MessageNode(DjangoObjectType):
 
     class Meta:
         model = Message
-        # fields = '__all__'
 
     def resolve_date(self, info):
         return self.date.strftime('%d %B %Y %H:%M')
@@ -52,11 +54,11 @@ class CreateMessageMutation(graphene.Mutation):
     message = graphene.Field(MessageNode)
 
     def mutate(self, info, request):
-        print(request)
+        response = str(get_AI_response(request))
         instance = Message.objects.create(
             user=info.context.user,
             request=request,
-            response='pass'
+            response=response
         )
         success = True
         return CreateMessageMutation(success=success, message=instance)
