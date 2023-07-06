@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  www:
+    build:
+      context: .
+      dockerfile: ./Docker/www/Dockerfile
+    expose:
+      - 8000
+    volumes:
+      - ./lowfoundAI/:/app/lowfoundAI:ro
+    working_dir: /
+    depends_on:
+      - pgdatabase
+
+  pgdatabase:
+    image: postgres:latest
+    env_file:
+      - ./Docker/postgres/env
+    expose:
+      - 5432
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data/:rw
+      - ./log:/var/log/:rw
+
+  nginx:
+    build:
+      context: ./Docker/nginx
+    env_file:
+      - .env
+    ports:
+      - "80:80"
+    depends_on:
+      - www
+
+volumes:
+    pgdata:

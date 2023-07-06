@@ -1,0 +1,3 @@
+POSTGRES_USER=lowfoundAI
+POSTGRES_PASSWORD=lowfoundAI
+POSTGRES_DB=lowfoundAI
