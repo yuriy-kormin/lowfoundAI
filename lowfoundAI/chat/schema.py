@@ -1,11 +1,9 @@
-import asyncio
-
 import graphene
 from graphene_django import DjangoObjectType
 from django.db.models import Q
 
 from .models import Message
-from .remote_api import process_api_request, get_AI_response
+from .remote_api import get_AI_response
 
 
 class MessageNode(DjangoObjectType):
