@@ -14,7 +14,7 @@ services:
       - pgdatabase
 
   pgdatabase:
-    image: postgres:latest
+    image: postgres:12-alpine
     env_file:
       - ./Docker/postgres/env
     expose:
@@ -22,7 +22,6 @@ services:
     restart: always
     volumes:
       - pgdata:/var/lib/postgresql/data/:rw
-      - ./log:/var/log/:rw
 
   nginx:
     build:
