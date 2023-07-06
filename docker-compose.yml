@@ -1,37 +1,40 @@
 version: "3.9"
 
 services:
-  www:
-    build:
-      context: .
-      dockerfile: ./Docker/www/Dockerfile
-    expose:
-      - 8000
-    volumes:
-      - ./lowfoundAI/:/app/lowfoundAI:ro
-    working_dir: /
-    depends_on:
-      - pgdatabase
+    pgdatabase:
+        image: postgres:alpine
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+            - POSTGRES_DB=postgres
+        expose:
+            - 5432
+        restart: always
+        volumes:
+            - pgdata:/var/lib/postgresql/data/:rw
 
-  pgdatabase:
-    image: postgres:12-alpine
-    env_file:
-      - ./Docker/postgres/env
-    expose:
-      - 5432
-    restart: always
-    volumes:
-      - pgdata:/var/lib/postgresql/data/:rw
 
-  nginx:
-    build:
-      context: ./Docker/nginx
-    env_file:
-      - .env
-    ports:
-      - "80:80"
-    depends_on:
-      - www
+    www:
+        build:
+            context: .
+            dockerfile: ./Docker/django/Dockerfile
+        env_file:
+            - ./.env
+        volumes:
+            - ./lowfoundAI:/app/lowfoundAI
+        expose:
+            - 8000
+        depends_on:
+            - pgdatabase
+
+    nginx:
+        build:
+            context: .
+            dockerfile: ./Docker/nginx/Dockerfile
+        ports:
+            - 80:80
+        depends_on:
+            - www
 
 volumes:
     pgdata:
