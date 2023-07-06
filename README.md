@@ -3,8 +3,9 @@
 ### Overview 
 
 It's a test assigment app for Lowfound company.
-<img width="200" alt="Screenshot 2023-07-06 at 14 33 03" src="https://github.com/yuriy-kormin/lowfoundAI/assets/96548294/83b25542-c6af-4c21-bbd3-3cc2bb93bfc9">
-<img width="200" alt="Screenshot 2023-07-06 at 14 34 24" src="https://github.com/yuriy-kormin/lowfoundAI/assets/96548294/d64ad46c-eb74-4c9a-8e07-2098f0d60e58">
+
+<img width="200" src="https://github.com/yuriy-kormin/lowfoundAI/assets/96548294/83b25542-c6af-4c21-bbd3-3cc2bb93bfc9">
+<img width="200" src="https://github.com/yuriy-kormin/lowfoundAI/assets/96548294/d64ad46c-eb74-4c9a-8e07-2098f0d60e58">
 
 
 Its built using the Django framework and provides communication
