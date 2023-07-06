@@ -4,6 +4,7 @@ ENV PYTHONUNBUFFERED 1
 
 COPY ["pyproject.toml","README.md","poetry.lock","/poetry/"]
 COPY Docker/django/docker-entrypoint.sh /
+COPY manage.py /app/
 WORKDIR /poetry
 
 RUN apt update && \
