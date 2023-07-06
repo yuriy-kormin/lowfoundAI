@@ -13,5 +13,4 @@ RUN apt update && \
     poetry config virtualenvs.create false && \
     poetry install --no-root && \
     apt-get clean -y
-
-RUN /app/Docker/django/docker-entrypoint.sh
+CMD ["/docker-entrypoint.sh"]
