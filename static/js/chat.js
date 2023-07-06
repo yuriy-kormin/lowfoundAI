@@ -251,12 +251,12 @@ function scrollToBottom(container) {
   container.scrollTop = container.scrollHeight;
 }
 function sendRequest(){
-    const text = document.getElementById('user_input').value;
+    const text = document.getElementById('user_input');
     const root = document.getElementById('chat_history');
     const tempResponse={
         'id': -1,
         'date': getCurrentDate(),
-        'request': text
+        'request': text.value
     }
     let div = make_message(tempResponse,true);
     const emptyDiv = document.getElementById('empty');
@@ -266,7 +266,7 @@ function sendRequest(){
     root.appendChild(div);
     text.value="";
     scrollToBottom(root);
-    makeRequest(text).then(response =>{
+    makeRequest(text.value).then(response =>{
         if (response['success']){
             removeDiv(div)
             div = make_message(response['message']);
