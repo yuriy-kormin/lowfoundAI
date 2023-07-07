@@ -25,7 +25,7 @@ async function getApiResponse(query,variables={}){
         },
         body: JSON.stringify({
             query: query,
-            variables
+            variables: variables
             }),
       });
       const data = await response.json();
@@ -224,7 +224,7 @@ async function makeRequest(text){
               }
             }
         `
-    const response = await getApiResponse(query,variables={'request':text})
+    const response = await getApiResponse(query,{'request':text})
     return response['createMessage']
 }
 
@@ -251,12 +251,13 @@ function scrollToBottom(container) {
   container.scrollTop = container.scrollHeight;
 }
 function sendRequest(){
-    const text = document.getElementById('user_input');
+    const InputText = document.getElementById('user_input');
     const root = document.getElementById('chat_history');
+    const text=InputText.value;
     const tempResponse={
         'id': -1,
         'date': getCurrentDate(),
-        'request': text.value
+        'request': text
     }
     let div = make_message(tempResponse,true);
     const emptyDiv = document.getElementById('empty');
@@ -264,9 +265,9 @@ function sendRequest(){
         removeDiv(emptyDiv);
     }
     root.appendChild(div);
-    text.value="";
+    InputText.value = "";
     scrollToBottom(root);
-    makeRequest(text.value).then(response =>{
+    makeRequest(text).then(response =>{
         if (response['success']){
             removeDiv(div)
             div = make_message(response['message']);

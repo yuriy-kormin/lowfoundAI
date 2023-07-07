@@ -29,8 +29,8 @@ def get_AI_response(request_data):
 
     response = requests.post(URL, json=data, headers=headers)
     if response.status_code == 200:
-        data = response.json()
-        print(response, data)
-        return data['choices'][0]['message']['content']
+        response_data = response.json()
+        print(response_data, data)
+        return response_data['choices'][0]['message']['content']
     else:
         return None

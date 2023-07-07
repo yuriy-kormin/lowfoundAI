@@ -52,6 +52,7 @@ class CreateMessageMutation(graphene.Mutation):
     message = graphene.Field(MessageNode)
 
     def mutate(self, info, request):
+        print(f'{request=}')
         response = str(get_AI_response(request))
         instance = Message.objects.create(
             user=info.context.user,
